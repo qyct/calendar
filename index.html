@@ -16,10 +16,8 @@
 html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 
-/* ── LAYOUT ── */
 #app{display:flex;flex-direction:column;width:100%;height:100%;overflow:hidden}
 
-/* ── HEADER ── */
 .hdr{
   flex:0 0 auto;
   display:flex;align-items:center;justify-content:space-between;
@@ -48,7 +46,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
   border-radius:10px;white-space:nowrap
 }
 
-/* Buttons */
 .btn{
   font-family:'Jost',sans-serif;font-weight:400;letter-spacing:0.08em;
   text-transform:uppercase;border-radius:2px;border:1px solid var(--warm-border);
@@ -59,12 +56,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .btn-primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:var(--cream)}
 .btn-nav{font-size:1rem;font-weight:300;color:var(--muted)}
 .btn-nav:hover{color:var(--dark);border-color:var(--accent);background:var(--stone)}
+.btn-font{font-size:1.1rem;font-weight:400;color:var(--muted);min-width:1.8em;text-align:center}
+.btn-font:hover{color:var(--dark);border-color:var(--accent);background:var(--stone)}
+.btn-font:disabled{opacity:0.3;cursor:not-allowed}
+.btn-font:disabled:hover{background:transparent;border-color:var(--warm-border);color:var(--muted)}
 .hdiv{width:1px;height:16px;background:var(--warm-border);flex-shrink:0}
 
-/* ── MAIN ── */
 #main{flex:1 1 0;min-height:0;padding:0.6rem 1rem;overflow:hidden}
 
-/* ── MONTHS GRID ── */
 .months-grid{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   grid-template-rows:repeat(3,minmax(0,1fr));
@@ -100,7 +99,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .day-cell.today:hover{background:var(--accent-dark)}
 .day-cell.sel:not(.today){background:var(--accent);color:var(--cream)}
 
-/* ── YEARS GRID ── */
 .years-grid{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   grid-template-rows:repeat(4,minmax(0,1fr));
@@ -138,6 +136,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
       <button class="btn btn-primary" id="btnToday">Today</button>
       <button class="btn" id="btnZoom"></button>
       <div class="hdiv"></div>
+      <button class="btn btn-font" id="btnFontDec" title="Decrease font size">&#8722;</button>
+      <button class="btn btn-font" id="btnFontInc" title="Increase font size">&#43;</button>
+      <div class="hdiv"></div>
       <span class="zoom-badge" id="zBadge"></span>
     </div>
   </header>
@@ -147,7 +148,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS=['S','M','T','W','T','F','S'];
 const today=new Date();
-let state={viewYear:today.getFullYear(),zoom:'months',selected:null};
+
+/* font scale: 1.0 = default, range 0.7 – 1.6, step 0.1 */
+const FONT_MIN=0.7,FONT_MAX=1.6,FONT_STEP=0.1;
+let state={viewYear:today.getFullYear(),zoom:'months',selected:null,fontScale:1.15};
 
 const $=id=>document.getElementById(id);
 const main=$('main');
@@ -158,7 +162,6 @@ function isToday(y,m,d){return y===today.getFullYear()&&m===today.getMonth()&&d=
 function getYears(){const s=Math.floor(state.viewYear/12)*12-1;return Array.from({length:16},(_,i)=>s+i)}
 function fmtDate(y,m,d){return new Date(y,m,d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 
-/* ── SIZING ── */
 function computeSizes(){
   const hdrH=$('hdr').offsetHeight;
   const availH=window.innerHeight-hdrH;
@@ -166,6 +169,7 @@ function computeSizes(){
   const pad=16;
   const innerH=availH-pad*1.2;
   const innerW=availW-pad*2;
+  const sc=state.fontScale;
 
   if(state.zoom==='months'){
     const cols=4,rows=3,gap=1;
@@ -176,36 +180,38 @@ function computeSizes(){
     const dayCellH=(cellH-headH-dayNameH-8)/6;
     const dayCellW=cellW/7;
     const dayCellSz=Math.min(dayCellH,dayCellW);
-    const fs_head=Math.min(Math.max(cellH*0.095,9),14);
-    const fs_dayName=Math.min(Math.max(dayCellSz*0.42,6),9);
-    const fs_day=Math.min(Math.max(dayCellSz*0.45,7),11);
+    const fs_head=Math.min(Math.max(cellH*0.095*sc,9),20);
+    const fs_dayName=Math.min(Math.max(dayCellSz*0.42*sc,6),13);
+    const fs_day=Math.min(Math.max(dayCellSz*0.45*sc,7),15);
     const pad_card=Math.max(cellH*0.04,3);
     return{cellW,cellH,headH,dayNameH,dayCellSz,fs_head,fs_dayName,fs_day,pad_card};
   } else {
     const cols=4,rows=4,gap=1;
     const cellW=(innerW-(cols-1)*gap)/cols;
     const cellH=(innerH-(rows-1)*gap)/rows;
-    const fs_year=Math.min(Math.max(cellH*0.28,14),38);
+    const fs_year=Math.min(Math.max(cellH*0.28*sc,14),52);
     return{cellW,cellH,fs_year};
   }
 }
 
 function applyHdrSizes(){
   const w=window.innerWidth;
+  const sc=state.fontScale;
   const hdr=$('hdr');
   hdr.style.height=Math.max(w*0.038,36)+'px';
-  $('yrTitle').style.fontSize=Math.max(w*0.028,18)+'px';
-  $('yrRange').style.fontSize=Math.max(w*0.013,9)+'px';
-  $('selInfo').style.fontSize=Math.max(w*0.012,8.5)+'px';
-  $('zBadge').style.fontSize=Math.max(w*0.011,8)+'px';
+  $('yrTitle').style.fontSize=Math.max(w*0.028*sc,18)+'px';
+  $('yrRange').style.fontSize=Math.max(w*0.013*sc,9)+'px';
+  $('selInfo').style.fontSize=Math.max(w*0.012*sc,8.5)+'px';
+  $('zBadge').style.fontSize=Math.max(w*0.011*sc,8)+'px';
   $('zBadge').style.padding=Math.max(w*0.003,2)+'px '+Math.max(w*0.008,5)+'px';
   document.querySelectorAll('.btn').forEach(b=>{
-    b.style.fontSize=Math.max(w*0.012,8.5)+'px';
+    b.style.fontSize=Math.max(w*0.012*sc,8.5)+'px';
     b.style.padding=Math.max(w*0.004,3)+'px '+Math.max(w*0.009,6)+'px';
   });
+  $('btnFontDec').disabled=state.fontScale<=FONT_MIN;
+  $('btnFontInc').disabled=state.fontScale>=FONT_MAX;
 }
 
-/* ── RENDER ── */
 function render(){
   applyHdrSizes();
   updateHeader();
@@ -322,6 +328,23 @@ $('btnNext').addEventListener('click',()=>{state.zoom==='months'?state.viewYear+
 $('btnToday').addEventListener('click',()=>{state.viewYear=today.getFullYear();state.zoom='months';render()});
 $('btnZoom').addEventListener('click',()=>{state.zoom=state.zoom==='months'?'years':'months';render()});
 $('yrTitle').addEventListener('click',()=>{state.zoom=state.zoom==='months'?'years':'months';render()});
+
+$('btnFontInc').addEventListener('click',()=>{
+  if(state.fontScale<FONT_MAX){state.fontScale=Math.round((state.fontScale+FONT_STEP)*10)/10;render()}
+});
+$('btnFontDec').addEventListener('click',()=>{
+  if(state.fontScale>FONT_MIN){state.fontScale=Math.round((state.fontScale-FONT_STEP)*10)/10;render()}
+});
+
+/* keyboard shortcuts: + / - */
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(e.key==='+'||e.key==='='){
+    if(state.fontScale<FONT_MAX){state.fontScale=Math.round((state.fontScale+FONT_STEP)*10)/10;render()}
+  } else if(e.key==='-'){
+    if(state.fontScale>FONT_MIN){state.fontScale=Math.round((state.fontScale-FONT_STEP)*10)/10;render()}
+  }
+});
 
 let resizeTimer;
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(render,60)});
