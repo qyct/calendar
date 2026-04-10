@@ -15,16 +15,10 @@
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-
 #app{display:flex;flex-direction:column;width:100%;height:100%;overflow:hidden}
-
 .hdr{
-  flex:0 0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 1.4rem;
-  border-bottom:1px solid var(--warm-border);
-  background:var(--cream);
-  gap:1rem;
+  flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.4rem;border-bottom:1px solid var(--warm-border);background:var(--cream);gap:1rem;
 }
 .hdr-left{display:flex;align-items:baseline;gap:0.8rem;min-width:0}
 .yr-title{
@@ -35,17 +29,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .yr-range{font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .hdr-right{display:flex;align-items:center;gap:0.4rem;flex-shrink:0}
 .sel-info{
-  letter-spacing:0.06em;color:var(--muted);
-  padding:0.15rem 0.5rem;border-left:2px solid var(--accent);
-  opacity:0;transition:opacity .2s;white-space:nowrap
+  letter-spacing:0.06em;color:var(--muted);padding:0.15rem 0.5rem;
+  border-left:2px solid var(--accent);opacity:0;transition:opacity .2s;white-space:nowrap
 }
 .sel-info.vis{opacity:1}
 .zoom-badge{
   letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);
-  background:var(--stone);border:1px solid var(--warm-border);
-  border-radius:10px;white-space:nowrap
+  background:var(--stone);border:1px solid var(--warm-border);border-radius:10px;white-space:nowrap
 }
-
 .btn{
   font-family:'Jost',sans-serif;font-weight:400;letter-spacing:0.08em;
   text-transform:uppercase;border-radius:2px;border:1px solid var(--warm-border);
@@ -60,10 +51,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .btn-font:hover{color:var(--dark);border-color:var(--accent);background:var(--stone)}
 .btn-font:disabled{opacity:0.3;cursor:not-allowed}
 .btn-font:disabled:hover{background:transparent;border-color:var(--warm-border);color:var(--muted)}
+.fy-toggle{display:flex;border:1px solid var(--warm-border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.fy-toggle .btn{border:none;border-radius:0;letter-spacing:0.06em;font-size:inherit}
+.fy-toggle .btn+.btn{border-left:1px solid var(--warm-border)}
+.fy-toggle .btn.active{background:var(--dark);color:var(--cream);border-color:var(--dark)}
+.fy-toggle .btn.active:hover{background:var(--accent-dark)}
 .hdiv{width:1px;height:16px;background:var(--warm-border);flex-shrink:0}
-
 #main{flex:1 1 0;min-height:0;padding:0.6rem 1rem;overflow:hidden}
-
 .months-grid{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   grid-template-rows:repeat(3,minmax(0,1fr));
@@ -76,6 +70,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 }
 .month-card:hover{background:var(--stone)}
 .month-card.cur-month{background:var(--accent-light)}
+.month-card.fy-start{border-top:2px solid var(--accent)}
 .month-head{
   font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:0.03em;
   color:var(--dark);flex-shrink:0;text-align:left
@@ -87,8 +82,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .days-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));flex:1;align-content:start}
 .day-cell{
   display:flex;align-items:center;justify-content:center;
-  font-weight:400;color:var(--ink);cursor:pointer;transition:background .1s,color .1s;
-  border-radius:2px;
+  font-weight:400;color:var(--ink);cursor:pointer;transition:background .1s,color .1s;border-radius:2px;
 }
 .day-cell:hover{background:var(--hover)}
 .day-cell.sun{color:var(--sun)}
@@ -98,7 +92,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .day-cell.today{background:var(--today-bg);color:var(--today-color);font-weight:500}
 .day-cell.today:hover{background:var(--accent-dark)}
 .day-cell.sel:not(.today){background:var(--accent);color:var(--cream)}
-
 .years-grid{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   grid-template-rows:repeat(4,minmax(0,1fr));
@@ -108,8 +101,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
 .year-cell{
   font-family:'Cormorant Garamond',serif;font-weight:300;letter-spacing:-0.01em;
   border:none;background:var(--cream);color:var(--ink);cursor:pointer;
-  transition:all .18s;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:0.3rem
+  transition:all .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem
 }
 .year-cell:hover{background:var(--stone);color:var(--accent-dark)}
 .year-cell.sel-yr{background:var(--dark);color:var(--cream)}
@@ -136,6 +128,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);color:v
       <button class="btn btn-primary" id="btnToday">Today</button>
       <button class="btn" id="btnZoom"></button>
       <div class="hdiv"></div>
+      <div class="fy-toggle">
+        <button class="btn active" id="btnCY">CY</button>
+        <button class="btn" id="btnFY">FY</button>
+      </div>
+      <div class="hdiv"></div>
       <button class="btn btn-font" id="btnFontDec" title="Decrease font size">&#8722;</button>
       <button class="btn btn-font" id="btnFontInc" title="Increase font size">&#43;</button>
       <div class="hdiv"></div>
@@ -149,9 +146,14 @@ const MONTHS=['January','February','March','April','May','June','July','August',
 const DAYS=['S','M','T','W','T','F','S'];
 const today=new Date();
 
-/* font scale: 1.0 = default, range 0.7 – 1.6, step 0.1 */
 const FONT_MIN=0.7,FONT_MAX=1.6,FONT_STEP=0.1;
-let state={viewYear:today.getFullYear(),zoom:'months',selected:null,fontScale:1.15};
+/* viewYear = the year the period STARTS in:
+   CY 2025 → Jan–Dec 2025
+   FY 2025 → Apr 2025–Mar 2026 (labelled "FY 2025–26") */
+let state={viewYear:today.getFullYear(),zoom:'months',selected:null,fontScale:1.15,yearMode:'CY'};
+
+/* Financial year that today falls in: month >= March(3) → starts this year, else last year */
+function fyOfToday(){return today.getMonth()>=3?today.getFullYear():today.getFullYear()-1}
 
 const $=id=>document.getElementById(id);
 const main=$('main');
@@ -162,6 +164,18 @@ function isToday(y,m,d){return y===today.getFullYear()&&m===today.getMonth()&&d=
 function getYears(){const s=Math.floor(state.viewYear/12)*12-1;return Array.from({length:16},(_,i)=>s+i)}
 function fmtDate(y,m,d){return new Date(y,m,d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 
+/* Returns ordered array of {y, m} for the 12 months to render */
+function getMonthList(){
+  if(state.yearMode==='CY'){
+    return Array.from({length:12},(_,i)=>({y:state.viewYear,m:i}));
+  }
+  /* FY: Apr(3)..Mar(2) — months 3–14 mod 12, year wraps after Dec */
+  return Array.from({length:12},(_,i)=>{
+    const raw=3+i;
+    return{y:state.viewYear+(raw>=12?1:0),m:raw%12};
+  });
+}
+
 function computeSizes(){
   const hdrH=$('hdr').offsetHeight;
   const availH=window.innerHeight-hdrH;
@@ -170,7 +184,6 @@ function computeSizes(){
   const innerH=availH-pad*1.2;
   const innerW=availW-pad*2;
   const sc=state.fontScale;
-
   if(state.zoom==='months'){
     const cols=4,rows=3,gap=1;
     const cellW=(innerW-(cols-1)*gap)/cols;
@@ -197,8 +210,7 @@ function computeSizes(){
 function applyHdrSizes(){
   const w=window.innerWidth;
   const sc=state.fontScale;
-  const hdr=$('hdr');
-  hdr.style.height=Math.max(w*0.038,36)+'px';
+  $('hdr').style.height=Math.max(w*0.038,36)+'px';
   $('yrTitle').style.fontSize=Math.max(w*0.028*sc,18)+'px';
   $('yrRange').style.fontSize=Math.max(w*0.013*sc,9)+'px';
   $('selInfo').style.fontSize=Math.max(w*0.012*sc,8.5)+'px';
@@ -210,6 +222,8 @@ function applyHdrSizes(){
   });
   $('btnFontDec').disabled=state.fontScale<=FONT_MIN;
   $('btnFontInc').disabled=state.fontScale>=FONT_MAX;
+  $('btnCY').classList.toggle('active',state.yearMode==='CY');
+  $('btnFY').classList.toggle('active',state.yearMode==='FY');
 }
 
 function render(){
@@ -220,8 +234,13 @@ function render(){
 
 function updateHeader(){
   if(state.zoom==='months'){
-    $('yrTitle').textContent=state.viewYear;
-    $('yrRange').textContent='';
+    if(state.yearMode==='FY'){
+      $('yrTitle').textContent='FY '+state.viewYear+'–'+(String(state.viewYear+1).slice(-2));
+      $('yrRange').textContent='Apr–Mar';
+    } else {
+      $('yrTitle').textContent=state.viewYear;
+      $('yrRange').textContent='';
+    }
     $('zBadge').textContent='Year view';
     $('btnZoom').textContent='Decades';
   } else {
@@ -243,16 +262,23 @@ function renderMonths(){
   grid.className='months-grid';
   grid.style.cssText=`height:${main.clientHeight-8}px`;
 
-  MONTHS.forEach((name,mi)=>{
+  const monthList=getMonthList();
+  const isCurPeriod=state.yearMode==='CY'
+    ?state.viewYear===today.getFullYear()
+    :state.viewYear===fyOfToday();
+
+  monthList.forEach(({y,m},idx)=>{
     const card=document.createElement('div');
     card.className='month-card';
-    if(mi===today.getMonth()&&state.viewYear===today.getFullYear())card.classList.add('cur-month');
+    if(isCurPeriod&&m===today.getMonth())card.classList.add('cur-month');
+    if(idx===0)card.classList.add('fy-start');
     card.style.padding=sz.pad_card+'px '+sz.pad_card*1.2+'px';
 
     const head=document.createElement('div');
     head.className='month-head';
     head.style.cssText=`font-size:${sz.fs_head}px;margin-bottom:${sz.pad_card*0.4}px`;
-    head.textContent=name;
+    /* In FY mode, Jan/Feb/Mar belong to the next calendar year — show year suffix for clarity */
+    head.textContent=(state.yearMode==='FY'&&m<=2)?MONTHS[m]+' '+y:MONTHS[m];
     card.appendChild(head);
 
     const dh=document.createElement('div');
@@ -271,9 +297,8 @@ function renderMonths(){
 
     const dg=document.createElement('div');
     dg.className='days-grid';
-
-    const first=getFirst(state.viewYear,mi);
-    const total=getDays(state.viewYear,mi);
+    const first=getFirst(y,m);
+    const total=getDays(y,m);
     for(let i=0;i<first;i++){
       const e=document.createElement('div');e.className='day-cell empty';
       e.style.height=sz.dayCellSz+'px';dg.appendChild(e);
@@ -284,12 +309,12 @@ function renderMonths(){
       let cls='day-cell';
       if(dow===0)cls+=' sun';
       if(dow===6)cls+=' sat';
-      if(isToday(state.viewYear,mi,d))cls+=' today';
-      if(state.selected&&state.selected.y===state.viewYear&&state.selected.m===mi&&state.selected.d===d&&!isToday(state.viewYear,mi,d))cls+=' sel';
+      if(isToday(y,m,d))cls+=' today';
+      if(state.selected&&state.selected.y===y&&state.selected.m===m&&state.selected.d===d&&!isToday(y,m,d))cls+=' sel';
       el.className=cls;
       el.style.cssText=`height:${sz.dayCellSz}px;font-size:${sz.fs_day}px`;
       el.textContent=d;
-      el.addEventListener('click',()=>{state.selected={y:state.viewYear,m:mi,d};render()});
+      el.addEventListener('click',()=>{state.selected={y,m,d};render()});
       dg.appendChild(el);
     }
     card.appendChild(dg);
@@ -302,7 +327,7 @@ function renderYears(){
   const sz=computeSizes();
   main.innerHTML='';
   const yrs=getYears();
-  const curY=today.getFullYear();
+  const curY=state.yearMode==='CY'?today.getFullYear():fyOfToday();
   const grid=document.createElement('div');
   grid.className='years-grid';
   grid.style.height=main.clientHeight-8+'px';
@@ -314,7 +339,8 @@ function renderYears(){
     if(y===curY)btn.classList.add('cur-yr');
     if(i===0||i===yrs.length-1)btn.classList.add('oor');
     btn.style.fontSize=sz.fs_year+'px';
-    const span=document.createElement('span');span.textContent=y;
+    const span=document.createElement('span');
+    span.textContent=state.yearMode==='FY'?y+'–'+(String(y+1).slice(-2)):y;
     btn.appendChild(span);
     if(y===curY){const dot=document.createElement('span');dot.className='yr-dot';btn.appendChild(dot)}
     btn.addEventListener('click',()=>{state.viewYear=y;state.zoom='months';render()});
@@ -323,11 +349,20 @@ function renderYears(){
   main.appendChild(grid);
 }
 
-$('btnPrev').addEventListener('click',()=>{state.zoom==='months'?state.viewYear--:state.viewYear-=12;render()});
-$('btnNext').addEventListener('click',()=>{state.zoom==='months'?state.viewYear++:state.viewYear+=12;render()});
-$('btnToday').addEventListener('click',()=>{state.viewYear=today.getFullYear();state.zoom='months';render()});
+function navPrev(){state.zoom==='months'?state.viewYear--:state.viewYear-=12;render()}
+function navNext(){state.zoom==='months'?state.viewYear++:state.viewYear+=12;render()}
+
+$('btnPrev').addEventListener('click',navPrev);
+$('btnNext').addEventListener('click',navNext);
+$('btnToday').addEventListener('click',()=>{
+  state.viewYear=state.yearMode==='CY'?today.getFullYear():fyOfToday();
+  state.zoom='months';render();
+});
 $('btnZoom').addEventListener('click',()=>{state.zoom=state.zoom==='months'?'years':'months';render()});
 $('yrTitle').addEventListener('click',()=>{state.zoom=state.zoom==='months'?'years':'months';render()});
+
+$('btnCY').addEventListener('click',()=>{if(state.yearMode==='CY')return;state.yearMode='CY';render()});
+$('btnFY').addEventListener('click',()=>{if(state.yearMode==='FY')return;state.yearMode='FY';render()});
 
 $('btnFontInc').addEventListener('click',()=>{
   if(state.fontScale<FONT_MAX){state.fontScale=Math.round((state.fontScale+FONT_STEP)*10)/10;render()}
@@ -336,10 +371,11 @@ $('btnFontDec').addEventListener('click',()=>{
   if(state.fontScale>FONT_MIN){state.fontScale=Math.round((state.fontScale-FONT_STEP)*10)/10;render()}
 });
 
-/* keyboard shortcuts: + / - */
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
-  if(e.key==='+'||e.key==='='){
+  if(e.key==='ArrowLeft'){navPrev()}
+  else if(e.key==='ArrowRight'){navNext()}
+  else if(e.key==='+'||e.key==='='){
     if(state.fontScale<FONT_MAX){state.fontScale=Math.round((state.fontScale+FONT_STEP)*10)/10;render()}
   } else if(e.key==='-'){
     if(state.fontScale>FONT_MIN){state.fontScale=Math.round((state.fontScale-FONT_STEP)*10)/10;render()}
