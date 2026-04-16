@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background rounded rect - cream/dark -->
+  <rect width="64" height="64" rx="12" fill="#2A2420"/>
+
+  <!-- Calendar body -->
+  <rect x="10" y="18" width="44" height="36" rx="4" fill="#FDFAF6"/>
+
+  <!-- Calendar header band -->
+  <rect x="10" y="18" width="44" height="14" rx="4" fill="#8B6F4E"/>
+  <rect x="10" y="26" width="44" height="6" fill="#8B6F4E"/>
+
+  <!-- Binding rings -->
+  <rect x="20" y="13" width="5" height="10" rx="2.5" fill="#5C4A35"/>
+  <rect x="39" y="13" width="5" height="10" rx="2.5" fill="#5C4A35"/>
+
+  <!-- Month dots grid — 3 rows × 4 cols, representing months -->
+  <!-- Row 1 -->
+  <rect x="16" y="38" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <rect x="25" y="38" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <rect x="34" y="38" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <rect x="43" y="38" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <!-- Row 2 -->
+  <rect x="16" y="45" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <rect x="25" y="45" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+  <!-- Today highlight -->
+  <rect x="34" y="45" width="7" height="5" rx="1.5" fill="#2A2420"/>
+  <rect x="43" y="45" width="7" height="5" rx="1.5" fill="#E8DFD2"/>
+
+  <!-- Header label - tiny white dots suggesting month labels -->
+  <circle cx="22" cy="22" r="1.5" fill="#FDFAF6" opacity="0.7"/>
+  <circle cx="29" cy="22" r="1.5" fill="#FDFAF6" opacity="0.7"/>
+  <circle cx="36" cy="22" r="1.5" fill="#FDFAF6" opacity="0.7"/>
+  <circle cx="43" cy="22" r="1.5" fill="#FDFAF6" opacity="0.7"/>
+</svg>
